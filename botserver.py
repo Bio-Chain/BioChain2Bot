@@ -53,14 +53,17 @@ class Bot:
     
     def telegramNewMember(self, bot, update):
         reload(commands)
+        print "New Member"
         commands.cmd_newMember(update=update, bot=self)
         
     def telegramMemberLeft(self, bot, update):
         reload(commands)
+        print "Member Left"
         commands.cmd_memberLeft(update=update, bot=self)
         
     def telegramError(self, bot, update, error):
         reload(commands)
+        print "Error"
         commands.cmd_error(update=update, bot=self, args=[error])
         
     def clientInput(self, data):
@@ -68,6 +71,7 @@ class Bot:
         command_split = data.split(' ')
         command_args = command_split[1:] or []
         command = command_split[0].lower()
+        print "Client Command: " + command
         try:
             return getattr(commands, 'cmd_' + command)(bot=self, args=command_args)
         except AttributeError:
