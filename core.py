@@ -26,7 +26,7 @@ def editMessage(bot, messageID, text):
 RE_SCRAPE_BIO = re.compile(r'<meta +property="og:description" +content="(.+?)".*>')
 RE_USERNAME = re.compile(r'@([a-zA-Z][\w\d]{4,31})')
 
-def getBioUsernames(username):
+def getBio(username):
     r = requests.get("http://t.me/" + username)
     if not r.ok:
         print("Networking Error: " + r.status_code)

@@ -6,10 +6,12 @@ import sys
 import os
 import commands
 from private import *
+from chain import Chain
 
 class Bot:
     def __init__(self):
         self.botInit()
+        self.chain = Chain(self.bot, "chain")
         #TODO Better port/host input
         port = 12345
         host = socket.gethostname()
@@ -43,6 +45,7 @@ class Bot:
         command_args = command_split[1:] or []
         command = command_split[0].lower().split('@')
         command.append(bot.username)
+        print "Telegram Command: ", command[0]
         if command[1].lower() != bot.username.lower():
             # this command is not for us
             return
@@ -71,7 +74,7 @@ class Bot:
         command_split = data.split(' ')
         command_args = command_split[1:] or []
         command = command_split[0].lower()
-        print "Client Command: " + command
+        print "Client Command: ", command
         try:
             return getattr(commands, 'cmd_' + command)(bot=self, args=command_args)
         except AttributeError:
