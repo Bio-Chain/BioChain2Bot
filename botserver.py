@@ -5,7 +5,7 @@ import socket
 import sys
 import os
 import commands
-import private
+from private import *
 
 class Bot:
     def __init__(self):
@@ -13,11 +13,12 @@ class Bot:
         #TODO Better port/host input
         port = 12345
         host = socket.gethostname()
-        server = socket.socket()
-        server.bind((host, port))
-        server.listen(5)
+        self.server = socket.socket()
+        self.server.bind((host, port))
+        self.server.listen(5)
+        print "Socket Server active"
         while True:
-            conn, addr = server.accept()
+            conn, addr = self.server.accept()
             print 'Connection from ', addr
             #TODO Implement some security
             data = conn.recv(1024)
@@ -33,13 +34,14 @@ class Bot:
         self.updater.dispatcher.add_handler(MessageHandler(Filters.status_update.left_chat_member, self.telegramMemberLeft))
         self.updater.dispatcher.add_error_handler(self.telegramError)
         self.updater.start_polling()
+        print "Telegram Bot active"
     
     def telegramInput(self, bot, update):
+        reload(commands)
         message = update.message
         command_split = message.text[1:].split(' ')
         command_args = command_split[1:] or []
         command = command_split[0].lower().split('@')
-        directed = bool(command[1:])
         command.append(bot.username)
         if command[1].lower() != bot.username.lower():
             # this command is not for us
@@ -47,19 +49,22 @@ class Bot:
         try:
             getattr(commands, 'cmd_' + command[0].lower())(update=update, bot=self, args=command_args)
         except AttributeError:
-            if directed:
-                commands.cmd_unknown(update=update, bot=self)
+            commands.cmd_unknown(update=update, bot=self)
     
     def telegramNewMember(self, bot, update):
+        reload(commands)
         commands.cmd_newMember(update=update, bot=self)
         
     def telegramMemberLeft(self, bot, update):
+        reload(commands)
         commands.cmd_memberLeft(update=update, bot=self)
         
     def telegramError(self, bot, update, error):
+        reload(commands)
         commands.cmd_error(update=update, bot=self, args=[error])
         
     def clientInput(self, data):
+        reload(commands)
         command_split = data.split(' ')
         command_args = command_split[1:] or []
         command = command_split[0].lower()
@@ -70,6 +75,7 @@ class Bot:
     
     def __del__(self):
         self.updater.stop()
+        self.server.close()
 
 def exit():
     print 'Bye Bye!'

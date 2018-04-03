@@ -26,7 +26,7 @@ def cmd_unknown(bot, update=False, args=[]):
     if update == False:
         return "Command unknown"
     else:
-        core.send_message(bot.bot, update, "Command Unknown")
+        update.message.reply_text("Command Unknown")
         
 def cmd_test(bot, update=False, args=[]):
     if update is not False:
