@@ -1,0 +1,6 @@
+HOST="#TODO"
+USER="#TODO"
+PASSWD="#TODO"
+DB="#TODO"
+TOKEN=None
+CHATNAME="testfollow"
