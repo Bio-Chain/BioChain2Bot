@@ -4,3 +4,4 @@ PASSWD="#TODO"
 DB="#TODO"
 TOKEN=None
 CHATNAME="testfollow"
+CHATID=123
