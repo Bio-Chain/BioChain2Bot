@@ -6,6 +6,7 @@ Telegram bot for the Bio Chain 2 Group
 Create a file private.py:
 
 TOKEN="Your token"
+
 CHATID=1234
 
 Run in a terminal ./botserver.py
