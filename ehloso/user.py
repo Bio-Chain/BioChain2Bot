@@ -1,14 +1,26 @@
+from collections import defaultdict
+
 class User:
     def __init__(self, username):
         self.username = username
-        self.nexts = []
-        self.prevs = []
+        self.nexts = defaultdict(int)
+        self.prevs = defaultdict(int)
+    
+    def killLinks(self, user):
+        for user in self.nexts.keys():
+            self.nexts[user]=0
+        for user in self.prevs.keys():
+            self.prevs[user]=0
     
     def addNext(self, user):
-        self.nexts.append(user)
+        user=self.getUser(str(user))
+        self.nexts[user]=1
+        return True
         
     def addPrev(self, user):
-        self.prevs.append(user)
+        user=self.getUser(str(user))
+        self.prevs[user]=1
+        return True
         
     def isStart(self):
         if len(self.prevs) is 0:
@@ -23,14 +35,16 @@ class User:
             return False
         
     def getNextChains(self):
-        for user in self.nexts:
+        for user in [x for x in self.nexts.keys() if self.nexts[x] is 1]:
             for chain in user.getNextChains():
                 if self.username not in chain:
-                    yield [user.username] + [chain]
+                    yield [str(user)] + [chain]
     
     def getPrevChains(self):
-        for user in self.prevs:
+        for user in [x for x in self.prevs.keys() if self.prevs[x] is 1]:
             for chain in user.getPrevChains():
                 if self.username not in chain:
-                    yield [chain] + [user.username]
+                    yield [chain] + [str(user)]
                     
+    def __str__(self):
+        return self.username

@@ -7,17 +7,25 @@ class Chains:
         
     def hasUser(self, username):
         for user in self.users:
-            if user.username is username:
+            if str(user) is str(username):
                 return True
         return False
         
     def getUser(self, username):
         for user in self.users:
-            if user.username is username:
+            if str(user) is str(username):
                 return user
         return False
+    
+    def getUsers(self):
+        for user in self.users:
+            yield str(user)
+            
+    def killLinks(self, user):
+        self.getUser(str(user)).killLinks()
         
     def addUser(self, username):
+        username=str(username)
         if self.hasUser(username) is false:
             user = User(username)
             self.users.append(user)
