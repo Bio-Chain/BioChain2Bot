@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from telegram.ext import Updater, MessageHandler, CommandHandler, Filters
-from private import TOKEN
+from private import TOKEN, CHATID
 import os
 from commands import Commands
 
