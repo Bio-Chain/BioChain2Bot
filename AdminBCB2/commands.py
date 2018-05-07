@@ -14,6 +14,6 @@ class Commands:
     def checkMember(self, id):
         members = [x["user_id"] for x in self.database.select("users")]
         if id in members:
-            pass
+            self.bot.restrict_chat_member(CHATID, id)
         else:
             self.bot.kick_chat_member(CHATID, id)
